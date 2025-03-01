@@ -43,13 +43,9 @@ class SoundsManager:
         self.ensure_sound_files_exist()
         
         # Preload sound files
-        self.sounds = {
-            "keypress": self._load_sound("keypress.wav"),
-            "error": self._load_sound("error.wav"),
-            "achievement": self._load_sound("achievement.wav"),
-            "level_up": self._load_sound("level_up.wav"),
-            "test_complete": self._load_sound("test_complete.wav")
-        }
+        self.sounds = {}
+        for sound_name in ["keypress", "error", "achievement", "level_up", "test_complete"]:
+            self.sounds[sound_name] = self._load_sound(f"{sound_name}.wav")
     
     def ensure_sound_files_exist(self):
         """Ensure that basic sound files exist in the sounds directory."""
@@ -75,12 +71,16 @@ class SoundsManager:
         
         # Return None if file doesn't exist
         if not sound_path.exists():
+            print(f"Warning: Sound file not found: {sound_path}")
             return None
         
         if SOUND_BACKEND == "pygame":
             try:
-                return pygame.mixer.Sound(str(sound_path))
-            except:
+                sound = pygame.mixer.Sound(str(sound_path))
+                sound.set_volume(self.volume / 100.0)  # Set initial volume
+                return sound
+            except Exception as e:
+                print(f"Error loading sound with pygame: {filename} - {e}")
                 return None
         else:
             # For winsound, just return the path
@@ -117,7 +117,10 @@ class SoundsManager:
             # Update volume for all loaded sounds
             for sound in self.sounds.values():
                 if sound:
-                    sound.set_volume(self.volume / 100.0)
+                    try:
+                        sound.set_volume(self.volume / 100.0)
+                    except Exception as e:
+                        print(f"Error setting volume: {e}")
     
     def enable(self, enabled=True):
         """Enable or disable all sounds."""
@@ -147,7 +150,10 @@ class SoundsManager:
                 import winsound
                 winsound.PlaySound(sound, winsound.SND_FILENAME)
             elif SOUND_BACKEND == "pygame":
-                sound.play()
+                try:
+                    sound.play()
+                except Exception as e:
+                    print(f"Error playing sound with pygame: {e}")
         except Exception as e:
             print(f"Error playing sound: {e}")
     

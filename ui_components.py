@@ -28,65 +28,6 @@ from config import COLORS, FONTS, UI_SETTINGS, ICON_PATH
 # Cache for loaded icons
 ICON_CACHE = {}
 
-class ModernFrame(ttk.Frame):
-    """Modern frame with rounded corners and shadow effect."""
-    
-    def __init__(self, parent, **kwargs):
-        self.bg_color = kwargs.pop("bg_color", COLORS["card_background"])
-        self.corner_radius = kwargs.pop("corner_radius", UI_SETTINGS["border_radius"])
-        self.shadow = kwargs.pop("shadow", True)
-        self.border = kwargs.pop("border", False)
-        
-        super().__init__(parent, **kwargs)
-        self.bind("<Configure>", self._on_configure)
-
-    def _on_configure(self, event):
-        """Redraw the frame with rounded corners when resized."""
-        width, height = event.width, event.height
-        
-        if width > 1 and height > 1:
-            # Create rounded rectangle canvas
-            if hasattr(self, "canvas"):
-                self.canvas.destroy()
-                
-            self.canvas = tk.Canvas(
-                self, 
-                bg=COLORS["background"],
-                highlightthickness=0
-            )
-            self.canvas.place(x=0, y=0, width=width, height=height)
-            
-            # Shadow effect (if enabled)
-            if self.shadow:
-                shadow_width = 3
-                for i in range(1, shadow_width + 1):
-                    opacity = 20 - i * 5  # Decreasing opacity for shadow gradient
-                    shadow_color = f"#{opacity:02x}{opacity:02x}{opacity:02x}"
-                    self.canvas.create_rounded_rect(
-                        shadow_width - i, 
-                        shadow_width - i,
-                        width - shadow_width + i, 
-                        height - shadow_width + i,
-                        self.corner_radius,
-                        fill=shadow_color,
-                        outline=""
-                    )
-            
-            # Main rounded rectangle
-            self.canvas.create_rounded_rect(
-                0, 0, width, height,
-                self.corner_radius,
-                fill=self.bg_color,
-                outline=COLORS["border"] if self.border else ""
-            )
-            
-            # FIX: Instead of using lower(), which is causing errors,
-            # ensure the canvas is created first, so it's naturally at the bottom
-            # and then lift all other widgets above it
-            for widget in self.winfo_children():
-                if widget != self.canvas:
-                    widget.lift()
-
 # Add rounded rectangle method to Canvas
 tk.Canvas.create_rounded_rect = lambda self, x1, y1, x2, y2, radius, **kwargs: self.create_polygon(
     x1+radius, y1,

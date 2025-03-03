@@ -1,0 +1,32 @@
+{
+    "id": "e_and_i",
+    "title": "E and I Keys",
+    "description": "Learn the E and I keys on the top row",
+    "keys": [
+        "a",
+        "s",
+        "d",
+        "f",
+        "e",
+        "i",
+        "j",
+        "k",
+        "l",
+        ";"
+    ],
+    "prerequisites": [
+        "home_row_words"
+    ],
+    "exercises": [
+        "e e e e e e e e e e",
+        "i i i i i i i i i i",
+        "fe fe fe fe fe fe fe",
+        "ji ji ji ji ji ji ji",
+        "desi desi desi desi",
+        "like like like like",
+        "file file file file",
+        "side side side side",
+        "isle isle isle isle",
+        "idea idea idea idea"
+    ]
+}

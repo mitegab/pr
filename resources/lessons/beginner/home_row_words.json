@@ -1,0 +1,30 @@
+{
+    "id": "home_row_words",
+    "title": "Home Row Words",
+    "description": "Practice words using only home row keys",
+    "keys": [
+        "a",
+        "s",
+        "d",
+        "f",
+        "j",
+        "k",
+        "l",
+        ";"
+    ],
+    "prerequisites": [
+        "home_row"
+    ],
+    "exercises": [
+        "ad ad ad ad ad ad",
+        "fad fad fad fad fad",
+        "sad sad sad sad sad",
+        "lad lad lad lad lad",
+        "ask ask ask ask ask",
+        "fall fall fall fall fall",
+        "salad salad salad salad",
+        "flask flask flask flask",
+        "all falls asks salad",
+        "jak jak jak jak jak"
+    ]
+}

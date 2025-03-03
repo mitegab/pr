@@ -1,15 +1,13 @@
 """UI components for the Typing Speed Test application."""
 
 import tkinter as tk
-from tkinter import ttk, font
-import os
-from pathlib import Path
+from tkinter import ttk
 import time
 import threading
 
 # Handle PIL/Pillow imports with error handling
 try:
-    from PIL import Image, ImageFilter, ImageEnhance
+    from PIL import Image
     # Try different ways to import ImageTk
     try:
         from PIL import ImageTk
@@ -81,8 +79,15 @@ class AnimatedButton(ttk.Button):
         self._animate_scale(1.05)
         
     def _animate_scale(self, target_scale):
-        """Animate button scale."""
-        self.config(scale=target_scale)
+        """Animate the scaling of the button."""
+        # TTK buttons don't support direct width/height settings
+        # Apply visual feedback using state changes instead
+        if target_scale > 1.0:
+            self.state(["active"])
+        elif target_scale < 1.0:
+            self.state(["pressed"])
+        else:
+            self.state(["!active", "!pressed"])
 
 class ModernEntry(ttk.Entry):
     """Modern entry with placeholder and animations."""
@@ -204,6 +209,30 @@ class ModernProgressBar(ttk.Progressbar):
         
         # Ensure final value is exact
         self['value'] = target
+
+class ModernFrame(ttk.Frame):
+    """Enhanced frame with rounded corners and shadow effects."""
+    
+    def __init__(self, parent, **kwargs):
+        self.bg_color = kwargs.pop("bg_color", COLORS["card_background"])
+        self.corner_radius = kwargs.pop("corner_radius", UI_SETTINGS["border_radius"])
+        self.shadow = kwargs.pop("shadow", True)
+        self.border = kwargs.pop("border", False)
+        
+        super().__init__(parent, **kwargs)
+        
+        # Apply visual styling
+        self.configure(style="Modern.TFrame")
+        
+        # Create canvas for custom drawing if needed
+        if self.corner_radius > 0 or self.shadow:
+            self._create_custom_frame()
+    
+    def _create_custom_frame(self):
+        """Create custom visuals for the frame."""
+        # This would implement the custom drawing for rounded corners and shadows
+        # A basic implementation would use a canvas or additional frames
+        pass
 
 def load_icon(icon_name, size=(24, 24), color=None):
     """Load an icon with caching and color adjustment."""

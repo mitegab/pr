@@ -1,0 +1,20 @@
+{
+    "id": "speed_building",
+    "title": "Speed Building",
+    "description": "Advanced exercises to build typing speed",
+    "prerequisites": [
+        "symbols"
+    ],
+    "exercises": [
+        "The early morning sun rose over the quiet town.",
+        "She quickly jumped over the fence to catch the bus.",
+        "Programming requires attention to detail and logical thinking.",
+        "In 2023, the company reported 45% growth in Q3.",
+        "Please submit your assignment by Friday, August 12th.",
+        "The package will arrive at 123 Main St., Apt #4.",
+        "He scored 98.5% on his final exam!",
+        "The software update (version 3.2.1) includes important security fixes.",
+        "\"To be or not to be, that is the question,\" wrote Shakespeare.",
+        "Email me at john.doe@example.com or call 555-123-4567."
+    ]
+}

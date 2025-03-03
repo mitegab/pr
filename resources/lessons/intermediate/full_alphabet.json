@@ -1,0 +1,48 @@
+{
+    "id": "full_alphabet",
+    "title": "Full Alphabet Practice",
+    "description": "Practice with all letters of the alphabet",
+    "keys": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z"
+    ],
+    "prerequisites": [
+        "bottom_row"
+    ],
+    "exercises": [
+        "the quick brown fox jumps over the lazy dog",
+        "pack my box with five dozen liquor jugs",
+        "amazingly few discotheques provide jukeboxes",
+        "sphinx of black quartz judge my vow",
+        "how quickly daft jumping zebras vex",
+        "crazy fredrick bought many very exquisite opal jewels",
+        "quick zephyrs blow vexing daft jim",
+        "waxy and quivering jocks fumble the pizza",
+        "five or six big jet planes zoomed quickly by the tower",
+        "a quick movement of the enemy will jeopardize five gunboats"
+    ]
+}

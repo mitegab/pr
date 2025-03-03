@@ -1,175 +1,182 @@
-"""Login and account creation screens for the typing test application."""
+"""Login screen for the typing test application."""
 
 import tkinter as tk
 from tkinter import ttk, messagebox
-from config import COLORS
+from config import COLORS, FONTS
 from simplified_ui import (
-    create_label, create_entry, create_button, create_frame
+    create_label, create_button, create_frame, create_entry
 )
 
 class LoginScreen:
-    """Login screen with username and password fields."""
+    """Login screen for user authentication."""
     
-    def __init__(self, root, user_manager, on_login=None, on_create_account=None, 
-                 on_back=None, mode="login"):
-        """Initialize login screen."""
+    def __init__(self, root, user_manager, mode="login", on_login=None, on_create_account=None, on_back=None):
+        """Initialize the login screen."""
         self.root = root
         self.user_manager = user_manager
+        self.mode = mode  # 'login' or 'create'
         self.on_login = on_login
         self.on_create_account = on_create_account
         self.on_back = on_back
-        self.mode = mode  # "login" or "create"
         
         self.setup_ui()
     
     def setup_ui(self):
         """Set up the user interface."""
+        # Main container taking full width and height
+        main_frame = create_frame(self.root, padding=0)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # App title at the top
+        title_frame = ttk.Frame(main_frame)
+        title_frame.pack(fill=tk.X, padx=20, pady=(30, 0))
+        
+        app_title = create_label(title_frame, "Typing Speed Test Pro", font_size=28, weight="bold")
+        app_title.pack()
+        
+        app_subtitle = create_label(title_frame, "Improve your typing skills with structured practice", font_size=14)
+        app_subtitle.pack(pady=5)
+        
+        # Central login card
+        login_card = create_frame(main_frame, padding=30, bg_color=COLORS["card_background"], shadow=True)
+        login_card.pack(expand=True, padx=250, pady=50)
+        
+        # Card title
         if self.mode == "login":
-            self.setup_login_ui()
+            card_title = create_label(login_card, "Login to Your Account", font_size=20, weight="bold")
         else:
-            self.setup_create_account_ui()
-    
-    def setup_login_ui(self):
-        """Set up login user interface."""
-        # Create a centered frame for login content
-        center_frame = create_frame(self.root, padding=20, bg_color=COLORS["card_background"])
-        center_frame.place(relx=0.5, rely=0.5, anchor="center", width=400, height=380)
+            card_title = create_label(login_card, "Create a New Account", font_size=20, weight="bold")
         
-        # App title
-        title_label = create_label(center_frame, "Typing Speed Test Pro", font_size=24, weight="bold")
-        title_label.pack(pady=(0, 30))
+        card_title.pack(pady=(0, 20))
         
         # Username field
-        username_frame = ttk.Frame(center_frame, style="TFrame")
-        username_frame.pack(fill=tk.X, pady=10)
+        username_label = create_label(login_card, "Username", font_size=14)
+        username_label.pack(anchor="w", pady=(0, 5))
         
-        username_label = create_label(username_frame, "Username", font_size=14)
-        username_label.pack(anchor=tk.W)
-        
-        self.username_entry = create_entry(username_frame, font_size=14)
-        self.username_entry.pack(fill=tk.X, pady=5)
+        self.username_var = tk.StringVar()
+        username_entry = create_entry(login_card, textvariable=self.username_var, font_size=16, width=30)
+        username_entry.pack(fill=tk.X, pady=(0, 15))
         
         # Password field
-        password_frame = ttk.Frame(center_frame, style="TFrame")
-        password_frame.pack(fill=tk.X, pady=10)
+        password_label = create_label(login_card, "Password", font_size=14)
+        password_label.pack(anchor="w", pady=(0, 5))
         
-        password_label = create_label(password_frame, "Password", font_size=14)
-        password_label.pack(anchor=tk.W)
-        
-        self.password_entry = create_entry(password_frame, font_size=14, show="•")
-        self.password_entry.pack(fill=tk.X, pady=5)
-        
-        # Login button
-        login_button = create_button(
-            center_frame,
-            text="Login",
-            command=self.login,
-            style="PrimaryButton.TButton",
+        self.password_var = tk.StringVar()
+        password_entry = ttk.Entry(
+            login_card, 
+            textvariable=self.password_var, 
+            font=(FONTS["primary"], 16),
+            show="•",
+            width=30
         )
-        login_button.pack(fill=tk.X, pady=20)
+        password_entry.pack(fill=tk.X, pady=(0, 20))
         
-        # Create account button
-        create_account_button = create_button(
-            center_frame,
-            text="Create Account",
-            command=self.create_account_click,
-            style="SecondaryButton.TButton",
-        )
-        create_account_button.pack(fill=tk.X)
+        # Confirm Password field (for create account mode)
+        if self.mode == "create":
+            confirm_password_label = create_label(login_card, "Confirm Password", font_size=14)
+            confirm_password_label.pack(anchor="w", pady=(0, 5))
+            
+            self.confirm_password_var = tk.StringVar()
+            confirm_password_entry = ttk.Entry(
+                login_card, 
+                textvariable=self.confirm_password_var, 
+                font=(FONTS["primary"], 16),
+                show="•",
+                width=30
+            )
+            confirm_password_entry.pack(fill=tk.X, pady=(0, 20))
         
-        # Bind Enter key to login
-        self.username_entry.bind("<Return>", lambda event: self.password_entry.focus())
-        self.password_entry.bind("<Return>", lambda event: self.login())
+        # Action buttons
+        button_frame = ttk.Frame(login_card)
+        button_frame.pack(fill=tk.X, pady=(20, 0))
         
-        # Focus username entry
-        self.username_entry.focus()
+        login_button = None
+        create_button_widget = None
+        back_button = None
+        
+        if self.mode == "login":
+            login_button = create_button(
+                button_frame,
+                text="Login",
+                command=self.login_click,
+                style="PrimaryButton.TButton"
+            )
+            login_button.pack(side=tk.RIGHT)
+            
+            create_button_widget = create_button(
+                button_frame,
+                text="Create Account",
+                command=self.create_account_click,
+                style="SecondaryButton.TButton"
+            )
+            create_button_widget.pack(side=tk.LEFT)
+        else:
+            create_button_widget = create_button(
+                button_frame,
+                text="Create Account",
+                command=self.create_account_click,
+                style="PrimaryButton.TButton"
+            )
+            create_button_widget.pack(side=tk.RIGHT)
+            
+            back_button = create_button(
+                button_frame,
+                text="Back to Login",
+                command=self.back_click,
+                style="SecondaryButton.TButton"
+            )
+            back_button.pack(side=tk.LEFT)
+        
+        # Footer
+        footer_frame = ttk.Frame(main_frame)
+        footer_frame.pack(fill=tk.X, pady=20)
+        
+        version_label = create_label(footer_frame, "v1.0", font_size=10, foreground=COLORS["muted_text"])
+        version_label.pack(side=tk.RIGHT, padx=20)
     
-    def setup_create_account_ui(self):
-        """Set up account creation user interface."""
-        # Create a centered frame for account creation content
-        center_frame = create_frame(self.root, padding=20, bg_color=COLORS["card_background"])
-        center_frame.place(relx=0.5, rely=0.5, anchor="center", width=400, height=450)
-        
-        # App title
-        title_label = create_label(center_frame, "Create Account", font_size=24, weight="bold")
-        title_label.pack(pady=(0, 30))
-        
-        # Username field
-        username_frame = ttk.Frame(center_frame, style="TFrame")
-        username_frame.pack(fill=tk.X, pady=10)
-        
-        username_label = create_label(username_frame, "Username", font_size=14)
-        username_label.pack(anchor=tk.W)
-        
-        self.new_username_entry = create_entry(username_frame, font_size=14)
-        self.new_username_entry.pack(fill=tk.X, pady=5)
-        
-        # Password field
-        password_frame = ttk.Frame(center_frame, style="TFrame")
-        password_frame.pack(fill=tk.X, pady=10)
-        
-        password_label = create_label(password_frame, "Password", font_size=14)
-        password_label.pack(anchor=tk.W)
-        
-        self.new_password_entry = create_entry(password_frame, font_size=14, show="•")
-        self.new_password_entry.pack(fill=tk.X, pady=5)
-        
-        # Confirm password field
-        confirm_password_frame = ttk.Frame(center_frame, style="TFrame")
-        confirm_password_frame.pack(fill=tk.X, pady=10)
-        
-        confirm_label = create_label(confirm_password_frame, "Confirm Password", font_size=14)
-        confirm_label.pack(anchor=tk.W)
-        
-        self.confirm_password_entry = create_entry(confirm_password_frame, font_size=14, show="•")
-        self.confirm_password_entry.pack(fill=tk.X, pady=5)
-        
-        # Create account button
-        create_account_button = create_button(
-            center_frame,
-            text="Create Account",
-            command=self.create_account,
-            style="PrimaryButton.TButton",
-        )
-        create_account_button.pack(fill=tk.X, pady=20)
-        
-        # Back button
-        back_button = create_button(
-            center_frame,
-            text="Back to Login",
-            command=self.back_to_login,
-            style="SecondaryButton.TButton"
-        )
-        back_button.pack(fill=tk.X)
-        
-        # Focus username entry
-        self.new_username_entry.focus()
-    
-    def login(self):
+    def login_click(self):
         """Handle login button click."""
-        username = self.username_entry.get().strip()
-        password = self.password_entry.get().strip()
+        username = self.username_var.get().strip()
+        password = self.password_var.get()
         
-        success = self.user_manager.login(username, password)
-        if success and self.on_login:
-            self.on_login(username)
+        success, message = self.user_manager.login(username, password)
+        
+        if success:
+            if self.on_login:
+                self.on_login(username)
+        else:
+            messagebox.showerror("Login Error", message)
     
     def create_account_click(self):
         """Handle create account button click."""
-        if self.on_create_account:
-            self.on_create_account()
+        if self.mode == "login":
+            # Switch to create account mode
+            if self.on_create_account:
+                self.on_create_account()
+        else:
+            # Actually create the account
+            username = self.username_var.get().strip()
+            password = self.password_var.get()
+            confirm_password = self.confirm_password_var.get()
+            
+            # Validate password match
+            if password != confirm_password:
+                messagebox.showerror("Error", "Passwords do not match")
+                return
+                
+            # Create the user
+            success, message = self.user_manager.create_user(username, password)
+            
+            if success:
+                messagebox.showinfo("Success", "Account created successfully")
+                # Log the user in
+                self.user_manager.login(username, password)
+                if self.on_login:
+                    self.on_login(username)
+            else:
+                messagebox.showerror("Error", message)
     
-    def create_account(self):
-        """Handle account creation."""
-        username = self.new_username_entry.get().strip()
-        password = self.new_password_entry.get().strip()
-        confirm_password = self.confirm_password_entry.get().strip()
-        
-        success = self.user_manager.create_account(username, password, confirm_password)
-        if success and self.on_back:
-            self.on_back()
-    
-    def back_to_login(self):
-        """Return to login screen."""
+    def back_click(self):
+        """Handle back button click."""
         if self.on_back:
             self.on_back()

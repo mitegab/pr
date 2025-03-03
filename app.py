@@ -1,14 +1,11 @@
 """Main application class for Typing Speed Test."""
 
 import tkinter as tk
+from tkinter import messagebox
 from config import COLORS, USER_DATA_FILE, SAMPLE_TEXTS, THEMES
 from user_manager import UserManager
 from typing_test_logic import TypingTestLogic
 from sounds_manager import SoundsManager
-
-# Define a dummy load_icon function if needed
-def load_icon(name, **kwargs):
-    return None
 
 class TypingSpeedTestApp:
     """Main application class for the Typing Speed Test."""
@@ -27,17 +24,6 @@ class TypingSpeedTestApp:
         self.current_user = None
         self.settings_screen = None
         self.dashboard_screen = None
-        
-        # Load icons
-        self.icons = {
-            "login": load_icon("login_icon.png"),
-            "create_account": load_icon("create_account_icon.png"),
-            "start": load_icon("start_icon.png"),
-            "reset": load_icon("reset_icon.png"),
-            "settings": load_icon("settings_icon.png"),
-            "dashboard": load_icon("dashboard_icon.png"),
-            "logout": load_icon("logout_icon.png")
-        }
         
         # Initialize current screen
         self.current_screen = None
@@ -88,40 +74,9 @@ class TypingSpeedTestApp:
             self.user_manager,
             self.typing_logic,
             self.current_user,
-            on_start=self.start_typing_test,
             on_settings=self.show_settings,
             on_dashboard=self.show_dashboard,
             on_logout=self.logout
-        )
-    
-    def start_typing_test(self):
-        """Start the typing test."""
-        self.clear_screen()
-        from test_screen import TestScreen
-        self.current_screen = TestScreen(
-            self.root,
-            self.user_manager,
-            self.typing_logic,
-            self.sounds_manager,
-            self.current_user,
-            on_back=self.show_welcome_screen,
-            on_finish=self.show_results
-        )
-    
-    def show_results(self, wpm, accuracy, time_seconds):
-        """Show the results screen."""
-        self.clear_screen()
-        from results_screen import ResultsScreen
-        self.current_screen = ResultsScreen(
-            self.root,
-            self.user_manager,
-            wpm,
-            accuracy,
-            time_seconds,
-            self.current_user,
-            on_retry=self.start_typing_test,
-            on_stats=self.show_dashboard,
-            on_home=self.show_welcome_screen
         )
     
     def show_settings(self):
@@ -146,13 +101,7 @@ class TypingSpeedTestApp:
         COLORS = THEMES[theme]
         
         # Refresh current screen to apply new settings
-        from welcome_screen import WelcomeScreen
-        from test_screen import TestScreen
-        
-        if isinstance(self.current_screen, WelcomeScreen):
-            self.show_welcome_screen()
-        elif isinstance(self.current_screen, TestScreen):
-            self.start_typing_test()
+        self.show_welcome_screen()
     
     def show_dashboard(self):
         """Show the user dashboard."""
@@ -172,6 +121,13 @@ class TypingSpeedTestApp:
     
     def logout(self):
         """Log out the current user."""
-        self.user_manager.logout()
-        self.current_user = None
-        self.show_login_screen()
+        confirm = messagebox.askyesno(
+            "Logout", 
+            "Are you sure you want to log out?",
+            parent=self.root
+        )
+        
+        if confirm:
+            self.user_manager.logout()
+            self.current_user = None
+            self.show_login_screen()

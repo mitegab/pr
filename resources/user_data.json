@@ -36,6 +36,152 @@
                 "error_sounds": true,
                 "achievement_sounds": true
             }
+        },
+        "Abebe": {
+            "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+            "created": "2025-03-01T05:52:17.905946",
+            "settings": {
+                "theme": "light",
+                "sound_effects": true,
+                "keyboard_layout": "QWERTY",
+                "default_difficulty": "Intermediate"
+            },
+            "stats": {
+                "best_wpm": 400.0,
+                "best_accuracy": 16.260162601626014,
+                "average_wpm": 400.0,
+                "total_tests": 1,
+                "total_time": 0,
+                "total_characters": 0,
+                "level": "Master",
+                "history": [
+                    {
+                        "timestamp": "2025-03-01T05:54:27.690948",
+                        "wpm": 400.0,
+                        "accuracy": 16.260162601626014,
+                        "test_type": "standard"
+                    }
+                ],
+                "practice_history": {
+                    "genre_History_Ancient Rome": [
+                        {
+                            "timestamp": "2025-03-01T05:54:27.690948",
+                            "wpm": 400.0,
+                            "accuracy": 16.260162601626014,
+                            "test_type": "standard"
+                        }
+                    ]
+                }
+            },
+            "lesson_progress": {}
+        },
+        "miteg": {
+            "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+            "created": "2025-03-02T14:59:51.932473",
+            "settings": {
+                "theme": "light",
+                "sound_effects": true,
+                "keyboard_layout": "QWERTY",
+                "default_difficulty": "Intermediate"
+            },
+            "stats": {
+                "best_wpm": 0,
+                "best_accuracy": 0,
+                "average_wpm": 0,
+                "total_tests": 0,
+                "total_time": 0,
+                "total_characters": 0,
+                "level": "Novice"
+            },
+            "lesson_progress": {}
+        },
+        "Mitiku": {
+            "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+            "created": "2025-03-02T15:18:42.502827",
+            "settings": {
+                "theme": "light",
+                "sound_effects": true,
+                "keyboard_layout": "QWERTY",
+                "default_difficulty": "Intermediate"
+            },
+            "stats": {
+                "best_wpm": 2340.0,
+                "best_accuracy": 100.0,
+                "average_wpm": 1341.2484865306144,
+                "total_tests": 2,
+                "total_time": 0,
+                "total_characters": 0,
+                "level": "Master",
+                "best_accurate_wpm": 2340.0,
+                "history": [
+                    {
+                        "timestamp": "2025-03-02T15:38:41.909775",
+                        "wpm": 2340.0,
+                        "accuracy": 100.0,
+                        "test_type": "standard"
+                    },
+                    {
+                        "timestamp": "2025-03-03T01:19:11.710270",
+                        "wpm": 342.49697306122863,
+                        "accuracy": 100.0,
+                        "test_type": "accuracy"
+                    },
+                    {
+                        "timestamp": "2025-03-03T01:19:40.270297",
+                        "wpm": 0,
+                        "accuracy": 100.0,
+                        "test_type": "speed"
+                    },
+                    {
+                        "timestamp": "2025-03-03T01:22:41.379803",
+                        "wpm": 0.0,
+                        "accuracy": 0,
+                        "test_type": "speed"
+                    },
+                    {
+                        "timestamp": "2025-03-03T01:25:08.167757",
+                        "wpm": 0.0,
+                        "accuracy": 0,
+                        "test_type": "speed"
+                    }
+                ],
+                "practice_history": {
+                    "genre_Literature_Pride and Prejudice": [
+                        {
+                            "timestamp": "2025-03-02T15:38:41.909775",
+                            "wpm": 2340.0,
+                            "accuracy": 100.0,
+                            "test_type": "standard"
+                        }
+                    ]
+                }
+            },
+            "lesson_progress": {
+                "beginner": {
+                    "home_row": {
+                        "completed": true,
+                        "best_wpm": 30.0,
+                        "best_accuracy": 100.0,
+                        "attempts": 42,
+                        "last_attempt": {
+                            "wpm": 0,
+                            "accuracy": 100.0,
+                            "elapsed_time": 0
+                        }
+                    },
+                    "home_row_words": {
+                        "completed": true,
+                        "best_wpm": 0,
+                        "best_accuracy": 100.0,
+                        "attempts": 20,
+                        "last_attempt": {
+                            "wpm": 0,
+                            "accuracy": 100.0,
+                            "elapsed_time": 0
+                        }
+                    }
+                }
+            }
         }
     },
     "version": "1.0"

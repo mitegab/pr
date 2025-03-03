@@ -1,0 +1,32 @@
+{
+    "id": "top_row",
+    "title": "Top Row Keys",
+    "description": "Learn the complete top row: q, w, e, r, t, y, u, i, o, p",
+    "keys": [
+        "q",
+        "w",
+        "e",
+        "r",
+        "t",
+        "y",
+        "u",
+        "i",
+        "o",
+        "p"
+    ],
+    "prerequisites": [
+        "e_and_i"
+    ],
+    "exercises": [
+        "q q q q q p p p p p",
+        "w w w w w o o o o o",
+        "e e e e e i i i i i",
+        "r r r r r u u u u u",
+        "t t t t t y y y y y",
+        "qwerty qwerty qwerty",
+        "poiuy poiuy poiuy",
+        "queue quiet quill",
+        "power tower lower",
+        "type your top row"
+    ]
+}

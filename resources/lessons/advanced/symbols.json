@@ -1,0 +1,33 @@
+{
+    "id": "symbols",
+    "title": "Symbol Keys",
+    "description": "Learn common symbols: !, @, #, $, %, ^, &, *, (, ), -",
+    "keys": [
+        "!",
+        "@",
+        "#",
+        "$",
+        "%",
+        "^",
+        "&",
+        "*",
+        "(",
+        ")",
+        "-"
+    ],
+    "prerequisites": [
+        "numbers"
+    ],
+    "exercises": [
+        "! ! ! ! ! ! ! ! ! !",
+        "@ @ @ @ @ @ @ @ @ @",
+        "# # # # # # # # # #",
+        "$ $ $ $ $ $ $ $ $ $",
+        "% % % % % % % % % %",
+        "^&*() ^&*() ^&*()",
+        "!@#$% !@#$% !@#$%",
+        "Hello! How are you?",
+        "He paid $5.99 for lunch.",
+        "(Note: 100% of the work is done.)"
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "id": "bottom_row",
+    "title": "Bottom Row Keys",
+    "description": "Learn the bottom row: z, x, c, v, b, n, m, comma",
+    "keys": [
+        "z",
+        "x",
+        "c",
+        "v",
+        "b",
+        "n",
+        "m",
+        ","
+    ],
+    "prerequisites": [
+        "top_row"
+    ],
+    "exercises": [
+        "z z z z z m m m m m",
+        "x x x x x n n n n n",
+        "c c c c c b b b b b",
+        "v v v v v v v v v v",
+        "zxcv zxcv zxcv zxcv",
+        "bnm, bnm, bnm, bnm,",
+        "zinc zinc zinc zinc",
+        "boxes boxes boxes",
+        "calm calm calm calm",
+        "verb verb verb verb"
+    ]
+}

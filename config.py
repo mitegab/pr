@@ -38,7 +38,8 @@ THEMES = {
         "progress_bg": "#E3E3E8",
         "graph_1": "#0071E3",
         "graph_2": "#5E5CE6",
-        "graph_3": "#FF9500"
+        "graph_3": "#FF9500",
+        "light_accent": "#A0CFFF"
     },
     "dark": {
         "background": "#1D1D1F",
@@ -47,7 +48,7 @@ THEMES = {
         "primary_button": "#0A84FF",
         "secondary_button": "#3A3A3C",
         "highlight": "#42A5F5",
-        "accent": "#31A8FF",
+        "accent": "#0A84FF",
         "success": "#32D74B",
         "error": "#FF453A",
         "warning": "#FF9F0A",
@@ -58,13 +59,17 @@ THEMES = {
         "progress_bg": "#3A3A3C",
         "graph_1": "#0A84FF",
         "graph_2": "#5E5CE6",
-        "graph_3": "#FF9F0A"
+        "graph_3": "#FF9F0A",
+        "light_accent": "#7ABBFF"
     }
 }
 
 # Default theme
 DEFAULT_THEME = "light"
 COLORS = THEMES[DEFAULT_THEME]
+
+# Add this to your COLORS dictionary in config.py
+COLORS["bg_primary"] = "#f0f0f0"  # Or whatever color you prefer
 
 # Font settings
 FONTS = {
@@ -97,6 +102,9 @@ USER_LEVELS = {
     "Expert": {"min_wpm": 91, "max_wpm": 120, "color": "#FFC107"},
     "Master": {"min_wpm": 121, "max_wpm": float('inf'), "color": "#DC3545"}
 }
+
+# Add this definition wherever your other path constants are defined
+THEMES_DIR = RESOURCES_DIR / "themes"
 
 def save_user_settings(username, settings):
     """Save user-specific settings to file."""

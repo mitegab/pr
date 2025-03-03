@@ -1,146 +1,130 @@
-"""Logic for the typing test functionality."""
+"""Core typing test logic for the application."""
 
-import time
 import random
-from datetime import datetime
+import time
 
 class TypingTestLogic:
-    """Logic for the typing test functionality."""
+    """Handles the core logic for typing tests."""
     
     def __init__(self, sample_texts):
-        """Initialize with sample texts for different difficulties."""
+        """Initialize with sample texts dictionary."""
         self.sample_texts = sample_texts
         self.current_difficulty = "Intermediate"  # Default difficulty
-        self.sample_text = self.sample_texts[self.current_difficulty]
+        self.sample_text = ""
         self.start_time = None
         self.end_time = None
-        self.elapsed_time = 0
-        self.letter_stats = {}
-        self.history = []
-    
-    def set_difficulty(self, difficulty):
-        """Set the difficulty level and update sample text."""
-        if difficulty in self.sample_texts:
-            self.current_difficulty = difficulty
-            self.start_test()
-    
+        self.typed_text = ""
+        self.reset()
+        
+    def reset(self):
+        """Reset the typing test state."""
+        self.start_time = None
+        self.end_time = None
+        self.typed_text = ""
+        
     def start_test(self):
         """Start a new typing test."""
-        # Select a random sample text from the chosen difficulty level
-        self.sample_text = self.sample_texts[self.current_difficulty]
+        self.reset()
+        self.sample_text = self.get_sample_text()
         self.start_time = time.time()
-        self.end_time = None
-        self.elapsed_time = 0
-        self.letter_stats = {letter: {"correct": 0, "incorrect": 0} for letter in "abcdefghijklmnopqrstuvwxyz"}
-    
+        return self.sample_text
+        
     def end_test(self):
-        """End the typing test and record final time."""
-        if self.start_time:
-            self.end_time = time.time()
-            self.elapsed_time = self.end_time - self.start_time
-    
-    def calculate_wpm(self, typed_text):
-        """Calculate words per minute based on current typing."""
+        """End the typing test and return results."""
+        self.end_time = time.time()
+        elapsed_time = self.end_time - self.start_time
+        
+        results = self.calculate_results(self.typed_text, self.sample_text, elapsed_time)
+        return results
+        
+    def update_typed_text(self, text):
+        """Update the current typed text."""
+        self.typed_text = text
+        
+        # If this is the first character typed, start the timer
+        if len(text) == 1 and self.start_time is None:
+            self.start_time = time.time()
+            
+        return self.calculate_current_results()
+        
+    def calculate_current_results(self):
+        """Calculate current results based on typed text so far."""
         if not self.start_time:
-            return 0
+            return {"wpm": 0, "accuracy": 0, "elapsed_time": 0}
+            
+        elapsed_time = time.time() - self.start_time
         
-        elapsed = time.time() - self.start_time
-        if elapsed < 0.1:  # Avoid division by very small numbers
-            elapsed = 0.1
+        return self.calculate_results(self.typed_text, self.sample_text, elapsed_time)
         
-        # Standard WPM calculation: 5 characters = 1 word
-        word_count = len(typed_text) / 5
-        minutes = elapsed / 60
+    def calculate_results(self, typed_text, sample_text, elapsed_time):
+        """Calculate WPM, accuracy and other metrics."""
+        # Calculate WPM
+        minutes = elapsed_time / 60
+        char_count = len(typed_text)
+        wpm = (char_count / 5) / minutes if minutes > 0 else 0
         
-        return word_count / minutes if minutes > 0 else 0
-    
-    def calculate_accuracy(self, typed_text):
-        """Calculate accuracy percentage."""
+        # Calculate accuracy
+        accuracy = self.calculate_accuracy(typed_text, sample_text)
+        
+        # Collect detailed results
+        results = {
+            "wpm": wpm,
+            "accuracy": accuracy,
+            "elapsed_time": elapsed_time,
+            "char_count": char_count,
+            "error_count": self.count_errors(typed_text, sample_text)
+        }
+        
+        return results
+        
+    def calculate_accuracy(self, typed_text, sample_text):
+        """Calculate the accuracy percentage."""
         if not typed_text:
             return 100.0
+            
+        compare_len = min(len(typed_text), len(sample_text))
+        total_chars = max(len(typed_text), len(sample_text))
         
-        correct_chars = 0
-        total_chars = min(len(typed_text), len(self.sample_text))
+        errors = sum(1 for i in range(compare_len) if typed_text[i] != sample_text[i])
+        errors += abs(len(typed_text) - len(sample_text))  # Count extra or missing chars
         
-        for i in range(total_chars):
-            if typed_text[i] == self.sample_text[i]:
-                correct_chars += 1
-                
-                # Track letter-specific stats
-                char = typed_text[i].lower()
-                if char.isalpha():
-                    self.letter_stats[char]["correct"] += 1
-            else:
-                # Track letter-specific stats
-                char = self.sample_text[i].lower()
-                if char.isalpha():
-                    self.letter_stats[char]["incorrect"] += 1
+        correct_chars = total_chars - errors
+        accuracy = (correct_chars / total_chars) * 100 if total_chars > 0 else 100
         
-        return (correct_chars / total_chars * 100) if total_chars > 0 else 100.0
-    
-    def calculate_speed_and_accuracy(self, typed_text):
-        """Calculate final WPM and accuracy after test completion."""
-        self.end_test()
+        return accuracy
         
-        wpm = self.calculate_wpm(typed_text)
-        accuracy = self.calculate_accuracy(typed_text)
+    def count_errors(self, typed_text, sample_text):
+        """Count the number of errors in the typed text."""
+        if not typed_text:
+            return 0
+            
+        compare_len = min(len(typed_text), len(sample_text))
         
-        # Save this test result to history
-        self.save_result(wpm, accuracy)
+        errors = sum(1 for i in range(compare_len) if typed_text[i] != sample_text[i])
+        errors += abs(len(typed_text) - len(sample_text))  # Count extra or missing chars
         
-        return wpm, accuracy
-    
-    def save_result(self, wpm, accuracy):
-        """Save test result to history."""
-        result = {
-            "timestamp": datetime.now().isoformat(),
-            "difficulty": self.current_difficulty,
-            "wpm": round(wpm, 2),
-            "accuracy": round(accuracy, 2),
-            "elapsed_time": round(self.elapsed_time, 2),
-            "letter_stats": self.letter_stats
-        }
-        self.history.append(result)
+        return errors
         
-        # Keep only the last 100 results
-        if len(self.history) > 100:
-            self.history = self.history[-100:]
-        
-        return result
-    
-    def get_weak_letters(self, limit=5):
-        """Get the letters with lowest accuracy."""
-        letter_accuracy = {}
-        for letter, stats in self.letter_stats.items():
-            total = stats["correct"] + stats["incorrect"]
-            if total >= 3:  # Only consider letters with enough data
-                accuracy = (stats["correct"] / total * 100) if total > 0 else 0
-                letter_accuracy[letter] = accuracy
-        
-        # Sort by accuracy (ascending) and take the lowest 'limit' letters
-        weak_letters = sorted(letter_accuracy.items(), key=lambda x: x[1])
-        return weak_letters[:limit]
-    
-    def get_progress_summary(self):
-        """Get a summary of progress over time."""
-        if not self.history:
-            return {"avg_wpm": 0, "avg_accuracy": 0, "trend": "stable"}
-        
-        recent = self.history[-min(10, len(self.history)):]
-        
-        avg_wpm = sum(r["wpm"] for r in recent) / len(recent)
-        avg_accuracy = sum(r["accuracy"] for r in recent) / len(recent)
-        
-        # Calculate trend
-        if len(recent) >= 2:
-            first_wpm = recent[0]["wpm"]
-            last_wpm = recent[-1]["wpm"]
-            trend = "improving" if last_wpm > first_wpm else "declining" if last_wpm < first_wpm else "stable"
+    def get_sample_text(self):
+        """Get a sample text for the current difficulty."""
+        if self.current_difficulty in self.sample_texts:
+            return self.sample_texts[self.current_difficulty]
         else:
-            trend = "stable"
+            # Fallback to a default text
+            return "The quick brown fox jumps over the lazy dog."
+            
+    def set_difficulty(self, difficulty):
+        """Set the difficulty level."""
+        if difficulty in self.sample_texts:
+            self.current_difficulty = difficulty
+            
+    def get_difficulties(self):
+        """Get available difficulty levels."""
+        return list(self.sample_texts.keys())
         
-        return {
-            "avg_wpm": round(avg_wpm, 2),
-            "avg_accuracy": round(avg_accuracy, 2),
-            "trend": trend
-        }
+    def is_completed(self):
+        """Check if the typing test is completed."""
+        if not self.sample_text:
+            return False
+            
+        return len(self.typed_text) >= len(self.sample_text)

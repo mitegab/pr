@@ -1,0 +1,27 @@
+{
+    "id": "home_row",
+    "title": "Home Row Keys",
+    "description": "Learn the home row keys: a, s, d, f, j, k, l, ;",
+    "keys": [
+        "a",
+        "s",
+        "d",
+        "f",
+        "j",
+        "k",
+        "l",
+        ";"
+    ],
+    "exercises": [
+        "fff jjj fff jjj",
+        "fj fj fj fj fj fj",
+        "ddd kkk ddd kkk",
+        "dk dk dk dk dk dk",
+        "sss lll sss lll",
+        "sl sl sl sl sl sl",
+        "aaa ;;; aaa ;;;",
+        "a; a; a; a; a; a;",
+        "asdf jkl; asdf jkl;",
+        "fjdk slaf ;dkj fsal"
+    ]
+}
